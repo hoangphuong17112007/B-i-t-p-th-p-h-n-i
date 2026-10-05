@@ -1,0 +1,39 @@
+#include <stdio.h>
+typedef struct {
+    int n;
+    char A, B, C;
+    int state;
+} Frame;
+void thap_ha_noi(int n, char A, char B, char C) {
+    Frame st[1000];
+    int top = 0;
+    st[top++] = (Frame){n, A, B, C, 0};
+    while (top > 0) {
+        Frame *f = &st[top - 1];
+        if (f->n == 1) {
+            printf("Chuyen dia 1 từ %c sang %c\n", f->A, f->C);
+            top--;
+        } else if (f->state == 0) {
+            f->state = 1;
+            st[top++] = (Frame){f->n - 1, f->A, f->C, f->B, 0};
+        } else if (f->state == 1) {
+            printf("Chuyen dia %d từ %c sang %c\n", f->n, f->A, f->C);
+            f->state = 2;
+            st[top++] = (Frame){f->n - 1, f->B, f->A, f->C, 0};
+        } else {
+            top--;
+        }
+    }
+}
+
+int main() {
+    int n;
+    printf("Nhập số lượng đĩa (n): ");
+    if (scanf("%d", &n) == 1 && n > 0) {
+        printf("\nCác bước giải bài toán Tháp Hà Nội với %d đĩa:\n", n);
+        thap_ha_noi(n, 'A', 'B', 'C');
+    } else {
+        printf("Nhập một số nguyên dương hợp lệ!\n");
+    }
+    return 0;
+}
